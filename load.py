@@ -10,11 +10,12 @@ def load_feedback(model):
     return xr.open_dataset(f'/tigress/cw55/data/CMIP6_post/abrupt-4xCO2/{model}/rk/rk.GFDL.toa.0001-0150.nc.r1i1p1f1.2x2.5.2021052021')
 
 if __name__ == '__main__':
-    for model in model_list('high_res'):
+    for model in model_list():
         print(model)
 
-        ds = load_cmip('GFDL-CM4', 'ua')
-        ds = load_cmip('GFDL-CM4', 'va')
-        ds = load_cmip('GFDL-CM4', 'wap')
+        ds = load_cmip(model, 'ua')
+        ds = load_cmip(model, 'va')
+        ds = load_cmip(model, 'wap')
 
-        ds = load_feedback('GFDL-CM4')
+        ds = load_feedback(model)
+        print(ds)
