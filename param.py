@@ -1,5 +1,5 @@
 def boundaries(domain_name=''):
-    if domain_name == '':
+    if domain_name == 'Global':
         xlim = (0, 360)
         ylim = (-90, 90)
     elif domain_name == 'Tropics':
