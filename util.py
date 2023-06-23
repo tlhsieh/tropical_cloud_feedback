@@ -1,6 +1,26 @@
 import numpy as np
 import xarray as xr
 
+def _dgpi(vshear, mshear, omega, absvort):
+    return (2.0 + 0.1*vshear)**(-1.7)*(5.5 - mshear*1e5)**(2.3)*(5.0 - 20*omega)**(3.4)*(5.5 + abs(absvort*1e5))**(2.4)*np.exp(-11.8) - 1.0 # following Murakami and Wang (2022) https://www.nature.com/articles/s43247-022-00410-z
+
+def dgpi(vshear, mshear, omega, absvort, sst):
+    """Calculate the dynamical genesis potential index of Murakami and Wang (2022)"""
+
+    if np.sum(np.isnan(sst)) == 0:
+        print('Warning: land region in SST needs to be NaN')
+
+    if np.max(sst.lat) < 25 or np.min(sst.lat) > -25:
+        print('Warning: SST data needs to cover 30S-30N to calculate tropical mean SST')
+
+    index = _dgpi(vshear, mshear, omega, absvort)
+    index = index*(abs(index.lat) > 5) # zero out data within 5S-5N # following Murakami and Wang (2022)
+
+    sst_anomaly = sst - sst.sel(lat=slice(-30, 30)).mean(['lat', 'lon'])
+    index = index*(sst_anomaly > 0) # zero out data where SST anomaly < 0 # following Murakami and Wang (2022)
+
+    return index
+
 def crop(da, xlim, ylim):
     """Crop the given DataArray to the given boundaries"""
 
@@ -9,34 +29,45 @@ def crop(da, xlim, ylim):
 
     return da.sel({xname: slice(xlim[0], xlim[1]), yname: slice(ylim[0], ylim[1])})
 
+##### from X-SHiELD #####
+
 def _op_2d_to_3d(func2d, da3d):
     dim0 = da3d.dims[0]
     computed = [func2d(da3d[i]) for i in range(len(da3d[dim0]))]
     element = computed[0]
+
+    if len(element.dims) == 2:
+        coords = [da3d[dim0], element[element.dims[-2]], element[element.dims[-1]]]
+        dims = [dim0, element.dims[-2], element.dims[-1]]
+    elif len(element.dims) == 1:
+        coords = [da3d[dim0], element[element.dims[-1]]]
+        dims = [dim0, element.dims[-1]]
+    else:
+        coords = [da3d[dim0]]
+        dims = [dim0]
     
-    return xr.DataArray(
-        computed, 
-        coords=[da3d[dim0]], 
-        dims=[dim0], 
-        name=da3d.name
-    )
+    return xr.DataArray(computed, coords=coords, dims=dims, name=da3d.name)
 
 def _op_2d_to_4d(func2d, da4d):
     dim0 = da4d.dims[0]
     dim1 = da4d.dims[1]
     computed = [[func2d(da4d[i, j]) for j in range(len(da4d[dim1]))] for i in range(len(da4d[dim0]))]
     element = computed[0][0]
-    
-    return xr.DataArray(
-        computed, 
-        coords=[da4d[dim0], da4d[dim1]], 
-        dims=[dim0, dim1], 
-        name=da4d.name
-    )
 
-##### from X-SHiELD #####
+    if len(element.dims) == 2:
+        coords = [da4d[dim0], da4d[dim1], element[element.dims[-2]], element[element.dims[-1]]]
+        dims = [dim0, dim1, element.dims[-2], element.dims[-1]]
+    elif len(element.dims) == 1:
+        coords = [da4d[dim0], da4d[dim1], element[element.dims[-1]]]
+        dims = [dim0, dim1, element.dims[-1]]
+    else:
+        coords = [da4d[dim0], da4d[dim1]]
+        dims = [dim0, dim1]
+    
+    return xr.DataArray(computed, coords=coords, dims=dims, name=da4d.name)
 
 def op_2d_to_nd(func2d, da):
+
     ndim = len(da.dims)
     if ndim == 2:
         return func2d(da)
@@ -45,9 +76,7 @@ def op_2d_to_nd(func2d, da):
     elif ndim == 4:
         return _op_2d_to_4d(func2d, da)
     else:
-        print("ndim needs to be 2, 3 or 4")
-
-##### from gfd.py #####
+        print("ndim needs to be 2, 3 or 4")##### from gfd.py #####
 
 def area_weighted_mean_2d(da, lat_name=None):
     if lat_name == None:
