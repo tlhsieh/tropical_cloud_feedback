@@ -2,6 +2,7 @@ import numpy as np
 import xarray as xr
 
 import os
+import yaml
 from cmip import model_list
 
 def load_cmip(model, field, exp='piControl'):
@@ -25,6 +26,12 @@ def load_cmip(model, field, exp='piControl'):
 
 def load_feedback(model):
     return xr.open_dataset(f'/tigress/cw55/data/CMIP6_post/abrupt-4xCO2/{model}/rk/rk.GFDL.toa.0001-0150.nc.r1i1p1f1.2x2.5.2021052021')
+
+def load_tc_spi_plus2K():
+    with open('/tigress/hsiehtl/feedback_data/plus2K_TC_SPI_SW.yaml', 'r') as f:
+        data = yaml.safe_load(f)
+
+    return data
 
 if __name__ == '__main__':
     for model in model_list():
