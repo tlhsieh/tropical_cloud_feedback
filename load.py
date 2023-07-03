@@ -3,7 +3,7 @@ import xarray as xr
 
 import os
 import yaml
-from cmip import model_list
+# from cmip import model_list
 
 def load_cmip(model, field, exp='piControl'):
     if exp == 'piControl':
