@@ -99,7 +99,10 @@ def get_land(da_source=None):
     """For use in TC seed tracker with HiRAM land data"""
     
     if da_source is None:
-        land_frac = xr.open_dataset('/tigress/hsiehtl/HiRAM_land_static.nc')['frac'][0]
+        try:
+            land_frac = xr.open_dataset('/tigress/hsiehtl/HiRAM_land_static.nc')['frac'][0]
+        except FileNotFoundError:
+            land_frac = xr.open_dataset('/home/tlh/ipy/HiRAM_land_static.nc')['frac'][0]
     else:
         land_frac = da_source
         
