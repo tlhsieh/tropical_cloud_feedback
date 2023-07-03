@@ -1,10 +1,6 @@
 import numpy as np
 import xarray as xr
 
-import os
-import yaml
-from cmip import model_list
-
 def load_cmip(model, field, exp='piControl'):
     if exp == 'piControl':
         yrend = '200'
@@ -32,14 +28,3 @@ def load_am4_monthly_mean(exp, field):
         return xr.open_dataarray(f'/work/tlh/feedback_data/monthly_mean/{exp}/{field}_000201-001112.nc')
     
     return xr.open_dataset(f'/work/tlh/feedback_data/rk_results/{exp}/rk.GFDL.toa.mon.0002-0011.nc')[field].groupby('time.month').mean() # field == dR_c_sw
-
-def load_tc_spi_plus2K():
-    with open('/tigress/hsiehtl/feedback_data/plus2K_TC_SPI_SW.yaml', 'r') as f:
-        data = yaml.safe_load(f)
-
-    return data
-
-if __name__ == '__main__':
-    for model in model_list():
-        print(model)
-        data = load_cmip(model, 'wap', 'abrupt-4xCO2')
