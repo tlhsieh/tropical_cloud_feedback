@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def boundaries(domain_name=''):
     if domain_name == 'Global':
         xlim = (0, 360)
@@ -49,3 +51,39 @@ def patch_expr():
         exp_names.append(f'c96L33_am4p0_2010climo_A{amp}.{lat}_{int(lon)}.0')
             
     return exp_names
+
+def patch_lat_lon():
+    lats = []
+    lons = []
+
+    lat = -15.0
+    for lon in range(0, 320+1, 40):
+        lats.append(lat)
+        lons.append(lon)
+    lat = -7.5
+    for lon in range(20, 340+1, 40):
+        lats.append(lat)
+        lons.append(lon)
+    lat = 0
+    for lon in range(0, 320+1, 40):
+        lats.append(lat)
+        lons.append(lon)
+    lat = 7.5
+    for lon in range(20, 340+1, 40):
+        lats.append(lat)
+        lons.append(lon)
+    lat = 15.0
+    for lon in range(0, 320+1, 40):
+        lats.append(lat)
+        lons.append(lon)
+
+    return lats, lons
+
+def patch_cmap():
+    nlon = 18
+
+    return [plt.get_cmap('Reds', nlon)(i) for i in range(0, nlon, 2)] + \
+           [plt.get_cmap('Oranges', nlon)(i) for i in range(1, nlon, 2)] + \
+           [plt.get_cmap('Greens', nlon)(i) for i in range(0, nlon, 2)] + \
+           [plt.get_cmap('Blues', nlon)(i) for i in range(1, nlon, 2)] + \
+           [plt.get_cmap('Purples', nlon)(i) for i in range(0, nlon, 2)]
