@@ -76,7 +76,9 @@ def op_2d_to_nd(func2d, da):
     elif ndim == 4:
         return _op_2d_to_4d(func2d, da)
     else:
-        print("ndim needs to be 2, 3 or 4")##### from gfd.py #####
+        print("ndim needs to be 2, 3 or 4")
+        
+##### from gfd.py #####
 
 def area_weighted_mean_2d(da, lat_name=None):
     if lat_name == None:
@@ -95,6 +97,30 @@ def get_fcor(lat):
 def get_beta(lat):
     return 2*2*np.pi/86164/6371e3*np.cos(lat/180*np.pi)
     
+def geoaxes(axes, land=True):
+    """Axes settings for geographical maps
+    
+    Args:
+        axes: array of axes or plt.gca()
+    """
+    
+    if not (type(axes) == np.ndarray):
+        axes = [axes]
+        
+    if land:
+        coastlines = get_land()
+        
+    for i in range(len(axes)):
+        if land:
+            coastlines.plot.contour(ax=axes[i], colors='k', linewidths=1)
+        if i == len(axes) - 1: # label the last plot
+            axes[i].set_xlabel('Longitude')
+        else:
+            axes[i].set_xlabel('')
+        axes[i].set_ylabel('Latitude')
+        axes[i].set_xticks(range(0, 360+1, 60))
+        axes[i].set_yticks(range(-90, 90+1, 15))
+        
 def get_land(da_source=None):
     """For use in TC seed tracker with HiRAM land data"""
     
