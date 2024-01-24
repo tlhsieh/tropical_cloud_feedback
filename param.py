@@ -38,13 +38,14 @@ def patch_expr():
     for lon in range(0, 320+1, 40):
         exp_names.append(f'c96L33_am4p0_2010climo_A{amp}.{lat}_{int(lon)}.0')
     lat = '-7.5'
-    for lon in range(-20, 300+1, 40):
+    for lon in [20, 60, 100, 140, 180, 220, 260, 300, -20]:
+    # for lon in range(-20, 300+1, 40):
         exp_names.append(f'c96L33_am4p0_2010climo_A{amp}.{lat}_{int(lon)}.0')
     lat = '0.0'
     for lon in range(0, 320+1, 40):
         exp_names.append(f'c96L33_am4p0_2010climo_A{amp}.{lat}_{int(lon)}.0')
     lat = '7.5'
-    for lon in range(-20, 300+1, 40):
+    for lon in [20, 60, 100, 140, 180, 220, 260, 300, -20]:
         exp_names.append(f'c96L33_am4p0_2010climo_A{amp}.{lat}_{int(lon)}.0')
     lat = '15.0'
     for lon in range(0, 320+1, 40):
