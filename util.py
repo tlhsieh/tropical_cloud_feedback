@@ -29,6 +29,11 @@ def crop(da, xlim, ylim):
 
     return da.sel({xname: slice(xlim[0], xlim[1]), yname: slice(ylim[0], ylim[1])})
 
+def e_sat(temp):
+    """Saturation vapor pressure in atm"""
+
+    return np.exp(-40700/8.3145*(1/temp - 1/373))
+    
 ##### from X-SHiELD #####
 
 def _op_2d_to_3d(func2d, da3d):
