@@ -1,0 +1,16 @@
+NH Tropics:
+  AM2.5C180:
+    dgpi_percent: 6.154895847295787
+    lambda_c_sw: -1.5950555247997031
+    spi_percent: 4.689278213269473
+    tc_percent: 11.65644171779141
+  AM2.5C360:
+    dgpi_percent: 4.234988995511952
+    lambda_c_sw: -0.626214844969948
+    spi_percent: 3.096865904912201
+    tc_percent: 4.955357142857143
+  HiRAM:
+    dgpi_percent: 0.6548513082183253
+    lambda_c_sw: 1.4398773223748447
+    spi_percent: -2.092883617603353
+    tc_percent: -6.422524843577475

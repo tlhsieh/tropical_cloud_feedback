@@ -1,0 +1,21 @@
+NH Tropics:
+  AM2.5C180:
+    CTL2010sGF_A1p5_7p5N_140E:
+      lambda_c_sw: -2.338228176700545
+      spi_percent: 24.249904572955646
+    CTL2010sGF_A1p5_7p5N_340E:
+      lambda_c_sw: -0.0912207869539983
+      spi_percent: 0.5503504846220505
+    CTL2010sGF_A1p5_7p5S_220E:
+      lambda_c_sw: 0.5500651100210249
+      spi_percent: -1.1302509153624152
+  HiRAM:
+    CTL2010sGF_A1p5_7p5N_140E:
+      lambda_c_sw: -2.213902709631225
+      spi_percent: 16.980916390614
+    CTL2010sGF_A1p5_7p5N_340E:
+      lambda_c_sw: 0.20621846590453427
+      spi_percent: -2.829595029908348
+    CTL2010sGF_A1p5_7p5S_220E:
+      lambda_c_sw: 1.4325325962362971
+      spi_percent: -5.84970632781065
